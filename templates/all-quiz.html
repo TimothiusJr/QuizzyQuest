@@ -1,0 +1,53 @@
+{% extends 'index.html' %}
+
+{% block title %}All Quizzes - QuizzyQuest{% endblock title %}
+
+{% block content %}
+<div style="padding-top: 100px; display: flex; flex-direction: column; min-height: 100vh; font-family: 'Poppins', sans-serif; background-color: #00052a; color: white; text-align: center; overflow-x: hidden; margin: 0;">
+    <h1 class="display-4 text-center my-5">All Quizzes</h1>
+
+    <div style="display: flex; flex-direction: column; align-items: flex-start; padding: 20px;">
+        <div style="margin-bottom: 10px;">
+            <a href="{% url 'all_quiz' %}" class="btn btn-sm btn-light m-1" style="margin: 1px; color: white; background-color: transparent; border: 2px solid white; border-radius: 50px; padding: 8px 20px;">All Quiz</a>
+            {% for category in categories %}
+            <a href="{% url 'search' category.name %}" class="btn btn-sm btn-light m-1" style="margin: 1px; color: white; background-color: transparent; border: 2px solid white; border-radius: 50px; padding: 8px 20px;">{{category.name}}</a>
+            {% endfor %}
+        </div>
+
+        <form role="search" method="get" action="{% url 'search' ' ' %}" style="width: 100%; margin-bottom: 20px;">
+            <div class="input-group">
+                <input name="q" type="search" class="form-control" placeholder="Search" aria-label="Search" style="margin-right: 10px; flex-grow: 1;">
+                <button type="submit" class="btn btn-primary" style="color: white; background-color: transparent; border: 2px solid white; border-radius: 50px; padding: 8px 20px;">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <div style="padding: 20px; padding-top: 0;">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-3" style="gap: 15px;">
+            {% if quizzes|length > 0 %}
+            {% for quiz in quizzes %}
+            <div class="col" style="flex: 1 0 21%; margin: 1%;">
+							<div class="card shadow-sm" style="background-color: #112244; color: white;">
+									<div class="card-body">
+											<h4>{{ quiz.title }}</h4>
+											<p class="card-text">Total Questions - {{ quiz.question_set.all|length }}</p>
+											<p class="card-text">{{ quiz.description|truncatewords:7 }}</p>
+											<div class="d-flex justify-content-between align-items-center">
+													<div class="btn-group">
+															<a href="{% url 'quiz' quiz.id %}" type="button" class="btn btn-sm btn-outline-success" style="color: white; background-color: transparent; border: 2px solid white; border-radius: 50px; padding: 8px 20px; transition: all 0.3s ease;">Start Quiz</a>
+													</div>
+													<small style="color: #add8e6;">{{ quiz.created_at|timesince }} ago</small>
+											</div>
+									</div>
+							</div>
+					</div>
+            {% endfor %}
+            {% else %}
+            <div class="col-lg-12 col-md-12 col-12">
+                <p class="text-center text-danger fs-5" style="color: #ff6347;">There is no quiz available for this category or search.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

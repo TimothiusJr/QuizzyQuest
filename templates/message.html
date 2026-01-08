@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+{% block title %}Message from @{{message.user.username}} - QuizzyQuest{% endblock title %}
+
+{% block content %}
+<div style="padding-top: 100px; display: flex; flex-direction: column; min-height: 100vh; font-family: 'Poppins', sans-serif; background-color: #00052a; color: white; text-align: center; overflow-x: hidden; margin: 0;">
+<h1 class="display-4 text-center my-5">Message From @{{message.user.username}}</h1>
+
+    <main>
+        <div class="container col-md-8 col-sm-12">
+            <article>
+                <sub>From</sub>
+                <p title="click to see profile"><a href="{% url 'profile' message.user.username %}">@{{message.user.username}}</a></p>
+                <sub>Received At</sub>
+                <p>{{message.created_at}}</p>
+                <sub>Subject</sub>
+                <p>{{message.subject}}</p>
+                <sub>Message</sub>
+                <p>{{message.message}}</p>
+            </article>
+        </div>
+    </main>
+  </div>
+
+{% endblock content %}

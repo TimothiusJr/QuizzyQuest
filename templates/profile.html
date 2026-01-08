@@ -1,0 +1,65 @@
+{% extends 'index.html' %}
+
+{% block title %}@{{user_profile2.user.username}}'s Profile - QuizzyQuest{% endblock title %}
+
+{% block content %}
+<div style="padding-top: 100px; display: flex; flex-direction: column; min-height: 100vh; font-family: 'Poppins', sans-serif; background-color: #00052a; color: white; text-align: center; overflow-x: hidden; margin: 0;">
+    <h1 class="display-4 text-center my-5">@{{user_profile2.user.username}}'s Profile</h1>
+    <div style="padding: 20px;">
+        <div class="mb-3">
+            {% for message in messages %}
+            <div id="message-div" style="margin-bottom: 10px;">
+                <h4 class="text-center text-success">{{message}}</h4>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 20px;">
+            {% if request.user.is_authenticated and request.user.username == user_profile2.user.username %}
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example" style="margin-bottom: 20px;">
+                <a href="{% url 'edit_profile' %}" type="button" class="btn btn-outline-primary" style="margin-right: 10px;">Edit</a>
+                <a href="{% url 'delete_profile' %}" type="button" class="btn btn-outline-danger">Delete</a>
+            </div>
+            {% endif %}
+
+            <div style="margin-bottom: 20px;">
+                <img src="{{user_profile2.profile_img.url}}" alt="user-profile" class="rounded-circle" style="width: 150px; height: 150px; margin-bottom: 20px;">
+                <h2 class="fs-3">{{user_profile2.user.username}}</h2>
+                <h2>{{user_profile2.user.first_name|default:"Full name not available"}} {{user_profile2.user.last_name}}</h2>
+                <p class="fs-5"><i class="bi bi-gender-ambiguous"></i> {{user_profile2.gender|default:'Gender Not Available'}}</p>
+                <p class="fs-5"><i class="bi bi-geo-alt-fill"></i> {{user_profile2.location|default:'Location Not Available'}}</p>
+                <p class="fs-5"><i class="bi bi-file-person"></i> {{user_profile2.bio|default:'Bio Not Available'}}</p>
+                {% if request.user.is_superuser %}
+                <p class="fs-5"><i class="bi bi-envelope-at"></i> <a href="mailto:{{user_profile2.user.email}}">{{user_profile2.user.email|default:'Email Not Available'}}</a></p>
+                {% endif %}
+            </div>
+        </div>
+
+        <hr class="my-5" style="margin-top: 20px; margin-bottom: 20px;">
+
+        <div style="margin-bottom: 20px;">
+            <h3>Quiz attended by @{{user_profile2.user.username}}</h3>
+            <table class="table" style="background-color: #112244; color: white; margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Quiz</th>
+                        <th scope="col">Marks</th>
+                        <th scope="col">Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for submission in submissions %}
+                    <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td title="{{submission.quiz.title}}">{{submission.quiz.title|truncatewords:6}}</td>
+                        <td>{{submission.score}}/{{submission.quiz.question_set.all|length}}</td>
+                        <td>{{submission.submitted_at|timesince}} ago</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

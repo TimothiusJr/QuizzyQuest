@@ -1,0 +1,118 @@
+{% extends 'index.html' %}
+
+{% block title %}@{{request.user.username}} Profile Delete Confirmation - QuizzyQuest{% endblock title %}
+
+{% block content %}
+
+<style>
+    html, body {
+        height: 100%; /* Ensures the full height of the viewport is used */
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+    body {
+        display: flex;
+        flex-direction: column; /* Stacks children vertically */
+        min-height: 100vh; /* Full viewport height */
+        font-family: 'Poppins', sans-serif;
+        background-color: #00052a;
+        color: white;
+        text-align: center;
+        
+    }
+
+    .navigation {
+        position: fixed; /* Changed from absolute to fixed to stay at the top */
+        top: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #112244;
+        padding: 10px 20px;
+        z-index: 1000; /* Ensures the nav is above all other content */
+    }
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-links li {
+        padding: 8px 30px;
+        margin: 0 15px;
+    }
+
+    .nav-links a, .cta-button {
+        text-decoration: none;
+        color: white;
+        font-weight: 500;
+        font-size: 0.9em;
+        background-color: transparent;
+        padding: 8px 20px;
+        border: 2px solid white;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover, .cta-button:hover {
+        background-color: #fff;
+        color: #64ffda;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 60px 20px 20px; /* Padding to push down from the fixed navbar */
+        flex: 1; /* Takes up all available space pushing footer to the bottom */
+    }
+
+    footer {
+        width: 100%;
+        background-color: #112244;
+        text-align: center;
+        padding: 10px 0;
+        color: #ffffff; /* Default text color */
+    }
+
+    footer .nav {
+        justify-content: center;
+        list-style: none;
+        padding: 0;
+    }
+
+    footer .nav-item {
+        display: inline;
+    }
+
+    footer .nav-link {
+        color: #ffffff; /* Custom light blue color */
+        padding: 8px;
+        text-decoration: none; /* Removes underline */
+    }
+
+    footer .nav-link:hover {
+        color: #64ffda; /* Darker blue for hover effect */
+        text-decoration: underline; /* Adds underline on hover */
+    }
+</style>
+<div style="padding-top: 100px; display: flex; flex-direction: column; min-height: 100vh; font-family: 'Poppins', sans-serif; background-color: #00052a; color: white; text-align: center; overflow-x: hidden; margin: 0;">
+<h1 class="display-4 text-center my-5">Confirmation Page</h1>
+
+<div class="container">
+    <form action="" method="POST" class="">
+        {% csrf_token %}
+        <p class="fs-4"><b>@{{request.user.username}}</b>, Are you sure you want to delete your profile?</p>
+        <a href="{% url 'profile' request.user.username %}" class="btn btn-success" type="button">Back to Profile</a>
+        <input class="btn btn-danger" type="submit" value="Confirm">
+    </form>
+</div>
+</div>
+
+{% endblock content %}

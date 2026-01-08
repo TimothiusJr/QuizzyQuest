@@ -1,0 +1,152 @@
+<script>
+  // Elements
+  var submitButton = document.getElementById("submit-button");
+  var timerSpan = document.getElementById("timer");
+  var quizForm = document.getElementById("quiz-form");
+  var questions = document.querySelectorAll(".question");
+  var userScoreInput = document.getElementById("user-score");
+
+  quizDuration = (questions.length) * 60; // convert in seconds
+  
+  // Update Timer
+  function updateTimer() {
+      var minutes = Math.floor(quizDuration / 60);
+      var seconds = quizDuration % 60;
+
+      timerSpan.innerText = minutes + "m" + seconds + 's';
+
+      // Check if the time ended
+      if (quizDuration <= 0) {
+          // Automatically Submit the quiz
+          clearTimeout(quizTimerId);
+          submitQuiz();
+      } else if (document.getElementById("message-div")) {
+          clearTimeout(quizTimerId);
+          highlightCorrectAnswers();
+      } else {
+          // decrement the timer value by 1s
+          quizDuration--;
+      }
+  }
+
+  // Function to submit the quiz
+  function submitQuiz() {
+      // Calculate the score
+      calculateScore();
+
+      // Submit the quiz
+      quizForm.submit();
+  }
+
+  // Check right answer and then calculate the score
+  function calculateScore() {
+      var score = 0;
+
+      // Loop through each question
+      questions.forEach(question => {
+          var selectedInput = question.querySelector('input:checked');
+          var correctAnswer = question.querySelector(".correct-answer").innerText;
+
+          // Check if the answer is correct or not
+          if (selectedInput && selectedInput.value === correctAnswer) {
+              score += 1;
+          }
+      });
+
+      // Update the hidden input field with score in form
+      userScoreInput.value = score;
+  }
+
+  // highlight correct answer while showing result
+  function highlightCorrectAnswers() {
+      questions.forEach(question => {
+          var correctAnswer = question.querySelector(".correct-answer");
+          correctAnswer.previousElementSibling.querySelector("input").classList.add("bg-success");
+          correctAnswer.previousElementSibling.classList.add("fw-bold");
+      });
+
+      // disable submit button
+      submitButton.disabled = true;
+
+      // disabel all options
+      var options = document.querySelectorAll(".form-check-input");
+      options.forEach(option => {
+          option.disabled = true;
+      });
+  }
+
+  // Attach Event Listener to Submit button
+  submitButton.addEventListener("click", submitQuiz);
+
+  // Timer Interval
+  quizTimerId = setInterval(updateTimer, 1000);
+</script>
+
+
+<script>
+  var submitButton = document.getElementById("submit-button");
+  var timerSpan = document.getElementById("timer");
+  var quizForm = document.getElementById("quiz-form");
+  var questions = document.querySelectorAll(".question");
+  var userScoreInput = document.getElementById("user-score");
+
+  var quizDuration = (questions.length) * 60; // convert in seconds
+
+  function updateTimer() {
+      var minutes = Math.floor(quizDuration / 60);
+      var seconds = quizDuration % 60;
+      timerSpan.innerText = `${minutes}m ${seconds}s`;
+
+      if (quizDuration <= 0) {
+          clearTimeout(quizTimerId);
+          submitQuiz();
+      }
+      quizDuration--;
+  }
+
+  function submitQuiz(event) {
+      event.preventDefault(); // Prevent the form from submitting immediately
+      calculateScore();
+      highlightAnswers();
+
+      setTimeout(() => { // Delay the form submission to show the answers
+          quizForm.submit();
+      }, 5000); // Adjust time as needed to display results
+  }
+
+  function calculateScore() {
+      var score = 0;
+      questions.forEach(question => {
+          var selectedInput = question.querySelector('input:checked');
+          var correctAnswer = question.querySelector(".correct-answer").textContent.trim();
+          if (selectedInput && selectedInput.value.trim() === correctAnswer) {
+              score++;
+          }
+      });
+      userScoreInput.value = score;
+  }
+
+  function highlightAnswers() {
+      questions.forEach(question => {
+          var selectedInput = question.querySelector('input:checked');
+          var correctAnswer = question.querySelector(".correct-answer").textContent.trim();
+          var options = question.querySelectorAll(".form-check-label");
+
+          options.forEach(label => {
+              var input = label.querySelector("input");
+              if (input.value.trim() === correctAnswer) {
+                  label.style.color = "green"; // Correct answer in green
+              } else if (selectedInput && input.value.trim() === selectedInput.value.trim()) {
+                  label.style.color = "red"; // Incorrect answer in red
+              }
+          });
+      });
+
+      submitButton.disabled = true; // Disable submit button after submission
+      var allOptions = document.querySelectorAll(".form-check-input");
+      allOptions.forEach(option => option.disabled = true); // Disable all options
+  }
+
+  submitButton.addEventListener("click", submitQuiz);
+  var quizTimerId = setInterval(updateTimer, 1000);
+</script>

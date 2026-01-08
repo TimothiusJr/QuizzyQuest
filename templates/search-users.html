@@ -1,0 +1,32 @@
+{% extends 'index.html' %}
+
+{% block title %}User Search - QuizzyQuest{% endblock title %}
+
+{% block content %}
+<div class="container text-center" style="padding: 20px;">
+    <h1 class="display-4 text-center my-5">Search result for query - "{{query}}"</h1>
+
+    <!-- Adjusting the grid to start from 2 columns even on smaller screens and ensuring more space for each card -->
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+        {% if users|length == 0 %}
+        <div class="col">
+            <h4 class="text-center text-danger">No User Available related to this query!!</h4>
+        </div>
+        {% else %}
+        {% for user in users %}
+        <div class="col">
+            <div class="card h-100 text-center p-3" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                <img src="{{ user.profile.profile_img.url }}" class="card-img-top img-fluid" style="width: auto; height: 150px; border-radius: 50%; margin-top: 10px; margin-bottom: 10px; object-fit: cover;" alt="user-profile">
+                <div class="card-body">
+                    <h2 class="fw-normal" style="font-size: 1.2em; margin-bottom: 0.5em;">@{{ user.username }}</h2>
+                    <p>{{ user.profile.bio|truncatewords:5 }}</p>
+                    <a class="btn btn-secondary" href="{% url 'profile' user.username %}">View Profile »</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
+

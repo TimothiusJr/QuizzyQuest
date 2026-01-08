@@ -1,0 +1,19 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container text-center my-5">
+  <h1 class="display-5 fw-bold my-2">Unleash Your Inner Wizard Of Wisdom</h1>
+  <p class="fs-3">Embark on a Journey of Knowledge Exploration with Our Extensive Collection of Interactive Quizzes.</p>
+  <div class=" buttons d-inline-flex gap-2 mb-5">
+    {% if not request.user.is_authenticated %}
+      <a href="{% url 'register' %}" class="cta-button sign-up d-inline-flex align-items-center btn btn-primary btn-lg px-4">
+          Sign Up
+      </a>
+      {% endif %}
+      <a href="{% url 'login' %}" class="cta-button log-in btn btn-outline-secondary btn-lg px-4" type="button">
+          Login
+      </a>
+  
+  </div>
+</div>
+{% endblock content %}

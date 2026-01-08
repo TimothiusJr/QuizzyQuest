@@ -1,0 +1,33 @@
+<div class="navigation" style="display: flex; align-items: center; justify-content: space-between; background-color: #112244; padding: 10px 20px; width: 100%; position: fixed; top: 0; z-index: 1000;">
+  <a class="navbar-brand" href="{% url 'home' %}" style="font-size: 1.5em; color: white; text-decoration: none;">QuizzyQuest</a>
+  <ul class="nav-links" style="list-style: none; display: flex; align-items: center; margin: 0; padding: 0;">
+    <li style="margin: 0 15px;">
+      <a href="{% url 'home' %}" style="text-decoration: none; color: white; background-color: transparent; padding: 8px 20px; border: 2px solid white; border-radius: 50px; transition: all 0.3s ease;">Home</a>
+    </li>
+    {% if request.user.is_superuser %}
+    <li style="margin: 0 15px;">
+      <a href="{% url 'dashboard' %}" style="text-decoration: none; color: white; background-color: transparent; padding: 8px 20px; border: 2px solid white; border-radius: 50px; transition: all 0.3s ease;">Dashboard</a>
+    </li>
+    {% endif %}
+    <li style="margin: 0 15px;">
+      <a href="{% url 'all_quiz' %}" style="text-decoration: none; color: white; background-color: transparent; padding: 8px 20px; border: 2px solid white; border-radius: 50px; transition: all 0.3s ease;">Courses</a>
+    </li>
+    <li style="margin: 0 15px;">
+      <a href="{% url 'all_quiz' %}" style="text-decoration: none; color: white; background-color: transparent; padding: 8px 20px; border: 2px solid white; border-radius: 50px; transition: all 0.3s ease;">Take Quiz</a>
+    </li>
+  </ul>
+  <div style="display: flex; align-items: center;">
+    <form class="d-flex" role="search" action="{% url 'search_users' %}" style="margin-right: 15px;">
+      <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search" style="margin-right: 10px;">
+      <button type="submit" class="btn btn-primary" style="color: white; background-color: transparent; border: 2px solid white; border-radius: 50px; padding: 8px 20px;">Search</button>
+    </form>
+    {% if request.user.is_authenticated %}
+      <a href="{% url 'profile' request.user.username %}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="@{{request.user.username}}" class="mx-2">
+          <img src="{{user_profile.profile_img.url}}" class="rounded-circle" width="40" height="40" alt="profile_img">
+      </a>
+      <a href="{% url 'logout' %}" class="cta-button sign-in" style="text-decoration: none; color: white; background-color: transparent; padding: 8px 16px; border: 2px solid white; border-radius: 50px; transition: all 0.3s ease;">Logout</a>
+    {% else %}
+      <a href="{% url 'login' %}" class="cta-button sign-in" style="text-decoration: none; color: white; background-color: transparent; padding: 8px 16px; border: 2px solid white; border-radius: 50px; transition: all 0.3s ease;">Sign in</a>
+    {% endif %}
+  </div>
+</div>
